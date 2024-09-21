@@ -79,25 +79,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   await dbConnect();
 
-  const session = await getServerSession(AuthOptions);
-
-  console.log(session);
-
-  const user: User = session?.user as User;
-
-  if (!session || !session?.user) {
-    return Response.json(
-      {
-        success: false,
-        message: "Not authenticated",
-      },
-      {
-        status: 401,
-      }
-    );
-  }
-
-  const userId = user._id;
+  const { userId } = await request.json();
 
   try {
     const foundUser = await UserModel.findById(userId);
