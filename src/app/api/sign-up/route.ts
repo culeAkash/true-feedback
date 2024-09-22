@@ -27,33 +27,37 @@ export async function POST(request: Request) {
     // user with username not present or not verified
 
     const existingUserByEmail = await UserModel.findOne({ email });
+    console.log("line 30 ", existingUserByEmail);
 
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     // user with email already present
     if (existingUserByEmail) {
       // user with email already present and verified
-      if (existingUserByEmail.isVerified) {
-        return Response.json(
-          {
-            success: false,
-            message: "Email already used",
-          },
-          {
-            status: 400,
-          }
-        );
-      } else {
-        // user with email already present and not verified
-        // change the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        existingUserByEmail.password = hashedPassword;
-        existingUserByEmail.verifyCode = verifyCode;
-        existingUserByEmail.verifyCodeExpiry = new Date(
-          Date.now() + 60 * 60 * 1000
-        );
-        await existingUserByEmail.save();
-      }
+      // if (existingUserByEmail.isVerified) {
+      //   return Response.json(
+      //     {
+      //       success: false,
+      //       message: "Email already used",
+      //     },
+      //     {
+      //       status: 400,
+      //     }
+      //   );
+      // } else {
+      // user with email already present and not verified
+      // change the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+      existingUserByEmail.password = hashedPassword;
+      existingUserByEmail.verifyCode = verifyCode;
+      existingUserByEmail.verifyCodeExpiry = new Date(
+        Date.now() + 60 * 60 * 1000
+      );
+      existingUserByEmail.username = username;
+      console.log("Line 55 ", existingUserByEmail);
+
+      await existingUserByEmail.save();
+      // }
     } else {
       //brand new user
       const hashedPassword = await bcrypt.hash(password, 10);

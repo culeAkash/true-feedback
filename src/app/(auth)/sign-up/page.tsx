@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
-const SignInPage = () => {
+const SignUpPage = () => {
   const [username, setUsername] = useState("");
 
   const [usernameMessage, setUsernameMessage] = useState("");
@@ -86,7 +86,7 @@ const SignInPage = () => {
           description: response.data.message,
         });
       }
-      router.replace(`/api/verify/${username}`);
+      router.replace(`/verify/${username}`);
       setIsFormSubmitting(false);
     } catch (error) {
       const axiosError = error as AxiosError<ApiReponse>;
@@ -199,4 +199,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;

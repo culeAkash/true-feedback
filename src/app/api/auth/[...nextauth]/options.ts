@@ -21,13 +21,18 @@ export const AuthOptions: NextAuthOptions = {
         // connect to db then proceed further
         await dbConnect();
 
+        console.log(credentials?.identifier);
+
         try {
           const user = await UserModel.findOne({
             $or: [
-              { email: credentials.identifier?.email },
-              { username: credentials.identifier?.username },
+              { email: credentials.identifier },
+              { username: credentials.identifier },
             ],
           });
+
+          console.log(user);
+
           if (!user) {
             throw new Error("No user found with this email");
           }
@@ -54,6 +59,8 @@ export const AuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
+      console.log(token);
+
       if (token) {
         session.user._id = token._id?.toString();
         session.user.username = token.username;

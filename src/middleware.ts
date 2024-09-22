@@ -7,7 +7,11 @@ import { getToken } from "next-auth/jwt";
 export async function middleware(request: NextRequest) {
   const token = await getToken({
     req: request,
+    cookieName: "next-auth.session-token",
+    secret: process.env.NEXT_AUTH_SECRET,
   });
+
+  console.log("In middleware", token);
 
   const url = request.nextUrl;
 
@@ -16,13 +20,14 @@ export async function middleware(request: NextRequest) {
     (url.pathname.startsWith("/sign-in") ||
       url.pathname.startsWith("/sign-up") ||
       url.pathname.startsWith("/verify") ||
-      url.pathname.startsWith("/"))
+      url.pathname.startsWith("/")) &&
+    !url.pathname.startsWith("/dashboard")
   ) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!token && url.pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+  if (url.pathname.startsWith("/dashboard")) {
+    if (!token) return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 }
 

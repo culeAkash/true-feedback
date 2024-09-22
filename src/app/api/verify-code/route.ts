@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
-          errors: userNameErrors,
+          message: userNameErrors,
         },
         { status: 400 }
       );
@@ -40,6 +40,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    console.log(existingUnverifiedUser.verifyCode, verifyCode);
 
     const isCodeValid = verifyCode === existingUnverifiedUser.verifyCode;
     const isCodeNotExpired =
