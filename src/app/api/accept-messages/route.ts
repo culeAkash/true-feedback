@@ -3,6 +3,7 @@ import UserModel from "@/models/User";
 import { AuthOptions } from "../auth/[...nextauth]/options";
 import { dbConnect } from "@/lib/dbConnect";
 import { User } from "next-auth";
+import { NextRequest } from "next/server";
 
 // currently logged in user will toggle the option of accepting messages
 export async function POST(request: Request) {
@@ -76,10 +77,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   await dbConnect();
 
-  const { userId } = await request.json();
+  const userId = request.nextUrl.searchParams.get("userId");
 
   try {
     const foundUser = await UserModel.findById(userId);
