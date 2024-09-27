@@ -12,6 +12,8 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 import messages from "@/messages.json";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const Home = () => {
   return (

@@ -72,7 +72,12 @@ export async function POST(request: Request) {
         verifyCodeExpiry: expiryDate,
         isVerified: false,
         isAcceptingMessages: true,
-        messages: [],
+        messages: [
+          {
+            content: "First Message",
+            createdAt: new Date(),
+          },
+        ],
       });
 
       await newUser.save();

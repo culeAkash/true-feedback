@@ -80,7 +80,10 @@ export async function POST(request: Request) {
 export async function GET(request: NextRequest) {
   await dbConnect();
 
+  console.log(request.nextUrl);
+
   const userId = request.nextUrl.searchParams.get("userId");
+  console.log(userId);
 
   try {
     const foundUser = await UserModel.findById(userId);

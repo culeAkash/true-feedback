@@ -37,24 +37,31 @@ type MessageCardProps = {
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   const { toast } = useToast();
 
-  const handleDeleteConfirm = async () => {
-    const response = await axios.delete<ApiReponse>(
-      `/api/delete-message/${message._id}`
-    );
+  const formattedDate = new Date(message.createdAt).toLocaleDateString("en-CA");
 
-    if (response.data.success) {
-      onMessageDelete(message._id);
-      toast({
-        title: "success",
-        description: response.data.message,
-      });
-    }
+  const handleDeleteConfirm = async () => {
+    console.log(message._id);
+
+    // const response = await axios.delete<ApiReponse>(
+    //   `/api/delete-message/${message._id}`
+    // );
+
+    // if (response.data.success) {
+    //   onMessageDelete(message._id);
+    //   toast({
+    //     title: "success",
+    //     description: response.data.message,
+    //   });
+    // }
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Card Title</CardTitle>
+    <Card className="flex flex-row place-content-between">
+      <CardDescription className="p-3">
+        <p className="text-xl font-medium text-black">{message.content}</p>
+        <p>{formattedDate}</p>
+      </CardDescription>
+      <CardFooter className="p-3">
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive">
@@ -65,8 +72,8 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                This action cannot be undone. This will permanently delete the
+                message
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -77,9 +84,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <CardDescription>Card Description</CardDescription>
-      </CardHeader>
-      <CardContent></CardContent>
+      </CardFooter>
     </Card>
   );
 };
