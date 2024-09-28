@@ -82,11 +82,12 @@ export async function GET(request: NextRequest) {
 
   console.log(request.nextUrl);
 
-  const userId = request.nextUrl.searchParams.get("userId");
-  console.log(userId);
+  const username = request.nextUrl.searchParams.get("username");
 
   try {
-    const foundUser = await UserModel.findById(userId);
+    const foundUser = await UserModel.findOne({
+      username,
+    });
 
     if (!foundUser) {
       return Response.json(
