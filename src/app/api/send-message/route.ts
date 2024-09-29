@@ -6,7 +6,9 @@ import { Message } from "@/models/User";
 export async function POST(request: Request) {
   await dbConnect();
 
-  const { username, content } = await request.json();
+  const { data } = await request.json();
+
+  const { username, content } = data;
 
   //validate with zod
   const result = messageSchema.safeParse({ content });
@@ -61,12 +63,14 @@ export async function POST(request: Request) {
 
     await user.save();
 
+    console.log("Inside Send Message");
+
     return Response.json(
       {
         success: true,
         message: "Message sent successfully",
       },
-      { status: 201 }
+      { status: 200 }
     );
   } catch (error) {
     console.log("Error sending message", error);

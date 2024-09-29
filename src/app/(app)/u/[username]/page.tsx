@@ -1,9 +1,11 @@
 import AutoMessages from "@/components/AutoMessages";
+import CreateMessage from "@/components/CreateMessage";
 import NewMessageForm from "@/components/NewMessageForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import { errorToJSON } from "next/dist/server/render";
 import { notFound } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -29,23 +31,10 @@ const MessagePage = async ({
     }
   }
 
-  const handleSubmitNewMessage = async (newMessage: string) => {
-    "use server";
-
-    try {
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError.message);
-    }
-  };
-
   return (
     <main className="h-full text-center p-8">
       <h1 className="text-3xl font-bold text-gray-900">Public Profile Link</h1>
-      <section className="flex flex-col gap-2 items-center">
-        <NewMessageForm handleSubmitNewMessage={handleSubmitNewMessage} />
-      </section>
-      <AutoMessages />
+      <CreateMessage username={username} />
     </main>
   );
 };
