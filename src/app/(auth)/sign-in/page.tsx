@@ -41,7 +41,7 @@ const SignInPage = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    console.log(data.identifier);
+    console.log("Inside login page", data.identifier);
     setIsFormSubmitting(true);
 
     const result = await signIn("credentials", {
@@ -50,15 +50,18 @@ const SignInPage = () => {
       password: data.password,
     });
 
-    console.log(result);
+    console.log("Inside login page", result);
 
     if (result?.error) {
+      console.log(result.error);
+
       toast({
         title: "Login Failed",
         description: "Incorrect email or password",
         variant: "destructive",
       });
       setIsFormSubmitting(false);
+      return;
     }
 
     if (result?.ok) {

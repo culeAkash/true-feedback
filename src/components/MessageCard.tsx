@@ -40,19 +40,20 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   const formattedDate = new Date(message.createdAt).toLocaleDateString("en-CA");
 
   const handleDeleteConfirm = async () => {
-    console.log(message._id);
+    console.log("In message card", message._id);
 
-    // const response = await axios.delete<ApiReponse>(
-    //   `/api/delete-message/${message._id}`
-    // );
+    const response = await axios.delete<ApiReponse>(
+      `/api/delete-message/${message._id}`
+    );
 
-    // if (response.data.success) {
-    //   onMessageDelete(message._id);
-    //   toast({
-    //     title: "success",
-    //     description: response.data.message,
-    //   });
-    // }
+    if (response.data.success) {
+      onMessageDelete(message._id);
+      toast({
+        title: "success",
+        description: response.data.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -78,7 +79,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteConfirm}>
+              <AlertDialogAction onClick={() => handleDeleteConfirm()}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>

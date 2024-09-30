@@ -45,10 +45,12 @@ export const AuthOptions: NextAuthOptions = {
             credentials.password,
             user.password
           );
+          console.log("Password check");
 
           if (!isPasswordCorrect) {
             throw new Error("Incorrect password");
           }
+          console.log("Password checked");
 
           return user;
         } catch (err: any) {

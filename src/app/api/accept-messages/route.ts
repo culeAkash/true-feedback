@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   const userId = user?._id;
 
   const { acceptMessages } = await request.json();
+  console.log(acceptMessages);
 
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(
@@ -82,11 +83,11 @@ export async function GET(request: NextRequest) {
 
   console.log(request.nextUrl);
 
-  const username = request.nextUrl.searchParams.get("username");
+  const userId = request.nextUrl.searchParams.get("userId");
 
   try {
     const foundUser = await UserModel.findOne({
-      username,
+      _id: userId,
     });
 
     if (!foundUser) {
